@@ -73,7 +73,7 @@ def prepare_data(csv_file):
 
 cr = prepare_data(get_csv_from_file('celkova_cr.csv'))
 cr1 = cr[3]
-print cr1
+print (cr1)
 hk = prepare_data(get_csv_from_file('celkova_hk.csv'))
 hk1 = hk[3]
 jc = prepare_data(get_csv_from_file('celkova_jc.csv'))

@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 import random as rd
 from abc import ABCMeta, abstractmethod
 
@@ -111,7 +110,7 @@ class OddComputerPlayer(ComputerPlayer):
         else:
             self._odd_x += 2
 
-        print "Odd Coords are: " + str([self._odd_x, self._odd_y])
+        print ("Odd Coords are: " + str([self._odd_x, self._odd_y]))
         return [self._odd_x, self._odd_y]
 
     def get_next_shoot_coords(self):
@@ -208,10 +207,10 @@ class GameBoard(object):
         for x in range(self._width):
             for y in range(self._height):
                 if self.is_there_object(x,y):
-                    print "o",
+                    print ("o"),
                 else:
-                    print ".",
-            print ""
+                    print ("."),
+            print ("")
 
 class Ship(object):
 
@@ -275,23 +274,23 @@ class Game(object):
          # print self._winner_player.name
 
     def _print_round_state(self, round_number):
-        print "Round number " + str(round_number) + ":"
-        print "----------------"
-        print ""
-        print "Player 1 defense:"
+        print ("Round number " + str(round_number) + ":")
+        print ("----------------")
+        print ("")
+        print ("Player 1 defense:")
         self._player_1.defense_game_board.print_board()
-        print "Player 1 offense:"
+        print ("Player 1 offense:")
         self._player_1.offense_game_board.print_board()
 
-        print " - - - - - - - - "
+        print (" - - - - - - - - ")
 
-        print "Player 2 defense:"
+        print ("Player 2 defense:")
         self._player_2.defense_game_board.print_board()
-        print "Player 2 offense:"
+        print ("Player 2 offense:")
         self._player_2.offense_game_board.print_board()
-        print ""
-        print ""
-        print ""
+        print ("")
+        print ("")
+        print ("")
 
     def _process_round(self):
         next_shoot_coords = self._current_player.get_next_shoot_coords()
@@ -377,8 +376,8 @@ for i in range(played_games):
         player_2_victories +=1
 
 
-print "Type: " + player_1_type + " Name: " + player_1_name + " won: " + str(player_1_victories) + " games out of: " + str(played_games)
-print "Type: " + player_2_type + " Name: " + player_2_name + " won: " + str(player_2_victories) + " games out of: " + str(played_games)
+print ("Type: " + player_1_type + " Name: " + player_1_name + " won: " + str(player_1_victories) + " games out of: " + str(played_games))
+print ("Type: " + player_2_type + " Name: " + player_2_name + " won: " + str(player_2_victories) + " games out of: " + str(played_games))
 
 # TODO: Reinstall lib???
 # plot = plt.plot(player_1_victories)
