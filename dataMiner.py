@@ -56,39 +56,35 @@ def prepare_data(csv_file):
     all = create_numpy_array(all)
     all[all < 0] = 0
 
-    crimes_count = crimes_count [0:29]
-    solved = solved [0:29]
-    recidivism = recidivism [0:29]
-    all = all [0:29]
-
+    trim_data(crimes_count)
+    trim_data(solved)
+    trim_data(recidivism)
+    trim_data(all)
 
     final_data = [crimes_count, solved, recidivism, all]
 
     return final_data
 
+def trim_data(data):
+    return data [0:29]
+
 def prepare_graph_data():
     pass
 
-murders = prepare_data(get_csv_from_file('vrazdy_praha_full.csv'))
-murders_found = murders[0]
-murders_recidive = murders[2]
+def get_solved_crimes_count(csv_file):
+    region_csv = prepare_data(get_csv_from_file(file))
+    region_criminality_index = region_csv[1]
+    return region_criminality_index
 
-rapes = prepare_data(get_csv_from_file('znasilneni_praha_full.csv'))
-rapes_found = rapes[0]
-rapes_recidive = rapes[2]
+def get_crimes_count(csv_file):
+    region_csv = prepare_data(get_csv_from_file(file))
+    region_criminality_index = region_csv[0]
+    return region_criminality_index
 
-all = prepare_data(get_csv_from_file('znasilneni_praha_full.csv'))
-rapes_found = rapes[0]
-
-
-attacks = prepare_data(get_csv_from_file('fyzicky_utok_praha_full.csv'))
-attacks_found = attacks[0]
-attacks_recidive = attacks[2]
-attacks_found_sum = sum(attacks_found)
-print attacks_found_sum
-attacks_recidive_sum = sum(attacks_recidive)
-print attacks_recidive_sum
-print attacks
+def get_recidive_count(csv_file):
+    region_csv = prepare_data(get_csv_from_file(file))
+    region_criminality_index = region_csv[2]
+    return region_criminality_index
 
 def get_criminality_index(csv_file):
     region_csv = prepare_data(get_csv_from_file(file))
@@ -98,36 +94,39 @@ def get_criminality_index(csv_file):
 
 date_chart = pygal.Line(x_label_rotation=45)
 date_chart._title = 'Marijuana planting'
-date_chart.x_labels = map(lambda d: d.strftime('%Y-%m-%d'), [
-datetime(2013, 1, 1),
-datetime(2013, 2, 1),
-datetime(2013, 3, 1),
-datetime(2013, 4, 1),
-datetime(2013, 5, 1),
-datetime(2013, 6, 1),
-datetime(2013, 7, 1),
-datetime(2013, 8, 1),
-datetime(2013, 9, 1),
-datetime(2013, 10, 1),
-datetime(2013, 11, 1),
-datetime(2013, 12, 1),
-datetime(2014, 1, 1),
-datetime(2014, 2, 1),
-datetime(2014, 3, 1),
-datetime(2014, 4, 1),
-datetime(2014, 5, 1),
-datetime(2014, 6, 1),
-datetime(2014, 7, 1),
-datetime(2014, 8, 1),
-datetime(2014, 9, 1),
-datetime(2014, 10,1),
-datetime(2014, 11, 1),
-datetime(2014, 12, 1),
-datetime(2015, 1, 1),
-datetime(2015, 2, 1),
-datetime(2015, 3, 1),
-datetime(2015, 4, 1),
-datetime(2015, 5, 1)])
+
+def create_graph_x_labels():
+
+    year, month, day = (2013, 1, 1)
+    i = 0
+
+    date_chart.x_labels = map(lambda d: d.strftime('%Y-%m-%d'), [
+
+    # while i < 29:
+    #     month += 1
+    #     datetime = datetime(year, month, day)
+    #     if i > 12:
+    #         month = 1
+    #         year += 1
+    #         datetime = datetime(year, month, day)
+
+
+    datetime(2013, 1, 1),
+    datetime(2013, 2, 1),
+    datetime(2013, 3, 1),
+    datetime(2013, 4, 1),
+    datetime(2013, 5, 1),
+    datetime(2013, 6, 1),
+    datetime(2013, 7, 1),
+    datetime(2013, 8, 1),
+    datetime(2013, 9, 1),
+    datetime(2013, 10, 1),
+    datetime(2013, 11, 1),
+    datetime(2013, 12, 1),
+    datetime(2014, 1, 1),
+    datetime(2014, 2, 1),
+    datetime(2014, 3, 1),
+])
 
 # date_chart.add("Recidivist", attacks_recidive)
 def add_graph_chart(caption, data):
