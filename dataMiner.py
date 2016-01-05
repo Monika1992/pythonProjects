@@ -137,18 +137,20 @@ def add_graph_chart(caption, data, chart):
     for i in range (caption.__len__()):
         return chart.add(caption, data)
 
+    # i = 0
+    # while i <= len(data[0]):
+    #     chart.add(data[[0][i]], data[[1][i]])
+    #     i+= 1
+
 def render_graph(file_name, graph):
     graph.render_to_file(file_name + random.randint(1,10000) + ".svg")
 
 def plot_line_chart(title, data):
-    bar_chart = pygal.Line(style=CleanStyle)
+    bar_chart = pygal.Line(style=CleanStyle, x_label_rotation=45)
 
     # TODO: implement add_graph_chart_method
-
-    i = 0
-    while i <= len(data[0]):
-        bar_chart.add(data[[0][i]], data[[1][i]])
-        i+= 1
+    bar_chart.add("Attacks", data[0])
+    bar_chart.add("Recidivism", data[1])
 
     create_graph_x_labels(bar_chart)
 
@@ -157,4 +159,4 @@ def plot_line_chart(title, data):
 
 solved_crimes = get_solved_crimes_count("fyzicky_utok_praha_full.csv")
 recidive_count = get_recidive_count("fyzicky_utok_praha_full.csv")
-plot_line_chart("Recidivist at physical attacks", [["Attacks", "Recidivism"],[solved_crimes, recidive_count]])
+plot_line_chart("Recidivist at physical attacks", [solved_crimes, recidive_count])
