@@ -1,9 +1,9 @@
 import random as rd
 from abc import ABCMeta, abstractmethod
+import time
+import csv
 
 # TODO: repair access modifiers in all classes from "protected" to "private"
-# TODO> grafz
-
 
 class Player(object):
 
@@ -271,7 +271,6 @@ class Game(object):
                 self._print_round_state(round_number)
                 self._switch_next_player()
 
-         # print self._winner_player.name
 
     def _print_round_state(self, round_number):
         print ("Round number " + str(round_number) + ":")
@@ -355,17 +354,76 @@ class Game(object):
         self._player_2.spread_ships(self._ship_count)
 
 
+class GameStats(object):
+
+    def __init__(self, game_data, start_time, end_time, played_games, player_1, player_2):
+        self.data = game_data
+        self.start_time = start_time
+        self.end_time = end_time
+        self.played_games = played_games
+        self.player_1 = player_1
+        self.player_2 = player_2
+        self.win_stats = []
+
+    def get_game_length(self):
+        game_length = abs(self.end_time - self.start_time)
+        return game_length/self.played_games
+
+    def _count_stats(self):
+
+        random_player_wins, gradually_player_wins, odd_player_wins, even_player_wins = 0, 0, 0, 0
+        random_player_chance, gradually_player_chance, odd_player_chance, even_player_chance = 0, 0, 0, 0
+
+        if self.data[0] == "Random":
+            random_player_wins += self.data[2]
+            random_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[0] == "Gradually":
+           gradually_player_wins += self.data[2]
+           gradually_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[0] == "Odd":
+           odd_player_wins += self.data[2]
+           odd_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[0] == "Even":
+            even_player_wins += self.data[2]
+            even_player_chance += (self.data[2]*100)/self.played_games
+
+        if self.data[1] == "Random":
+            random_player_wins += self.data[3]
+            random_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[1] == "Gradually":
+            gradually_player_wins += self.data[3]
+            gradually_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[1] == "Odd":
+            odd_player_wins += self.data[3]
+            odd_player_chance += (self.data[2]*100)/self.played_games
+        elif self.data[1] == "Even":
+            even_player_wins += self.data[3]
+            even_player_chance += (self.data[2]*100)/self.played_games
+
+        game_length = self.get_game_length()
+
+        self.win_stats = [random_player_wins, gradually_player_wins, odd_player_wins, even_player_wins, game_length,
+                     random_player_chance, gradually_player_chance, odd_player_chance, even_player_chance,
+                          self.player_1, self.player_2]
+
+
+    def _save_stats(self):
+        with open ("game_stats.csv", "a") as file:
+            wr = csv.writer(file)
+            wr.writerow(self.win_stats)
+            file.close()
 
 player_1_victories = 0
 player_2_victories = 0
-player_1_type = "Random"
+player_1_type = "Gradually"
 player_2_type = "Gradually"
 player_1_name = "Player_1"
 player_2_name = "Player_2"
-played_games = 5
+played_games = 3
 ship_count = 5
 game_board_size = 10
 
+start_time = time.time()
 for i in range(played_games):
     game = Game(player_1_type, player_2_type, game_board_size, ship_count, player_1_name, player_2_name)
     game.start()
@@ -374,12 +432,19 @@ for i in range(played_games):
         player_1_victories +=1
     elif winner == player_2_name:
         player_2_victories +=1
+end_time = time.time()
+
+data = [player_1_type, player_2_type, player_1_victories, player_2_victories]
+
+game_stats = GameStats(data, start_time, end_time, played_games, player_1_type, player_2_type)
+game_length = game_stats.get_game_length()
+game_stats._count_stats()
+game_stats._save_stats()
 
 
 print ("Type: " + player_1_type + " Name: " + player_1_name + " won: " + str(player_1_victories) + " games out of: " + str(played_games))
 print ("Type: " + player_2_type + " Name: " + player_2_name + " won: " + str(player_2_victories) + " games out of: " + str(played_games))
 
-# TODO: Reinstall lib???
-# plot = plt.plot(player_1_victories)
-# plot.show()
+
+
 
