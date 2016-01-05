@@ -5,7 +5,6 @@ import random
 
 # returns image with reduced color count
 def prepare_original_image(file_name):
-
     new_image = Image.open(file_name)
 
     ImageEnhance.Contrast(new_image)
